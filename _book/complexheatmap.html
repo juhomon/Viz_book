@@ -23,7 +23,7 @@
 <meta name="author" content="Juho Mononen" />
 
 
-<meta name="date" content="2025-03-03" />
+<meta name="date" content="2025-03-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -199,204 +199,199 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb13-4"><a href="complexheatmap.html#cb13-4" tabindex="-1"></a></span>
 <span id="cb13-5"><a href="complexheatmap.html#cb13-5" tabindex="-1"></a><span class="co"># Perform DEA</span></span>
 <span id="cb13-6"><a href="complexheatmap.html#cb13-6" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeqDataSet</span>(airway, <span class="at">design =</span> <span class="sc">~</span> cell <span class="sc">+</span> dex)</span>
-<span id="cb13-7"><a href="complexheatmap.html#cb13-7" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds, <span class="at">betaPrior=</span><span class="cn">FALSE</span>)</span></code></pre></div>
-<pre><code>## estimating size factors</code></pre>
-<pre><code>## estimating dispersions</code></pre>
-<pre><code>## gene-wise dispersion estimates</code></pre>
-<pre><code>## mean-dispersion relationship</code></pre>
-<pre><code>## final dispersion estimates</code></pre>
-<pre><code>## fitting model and testing</code></pre>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="complexheatmap.html#cb20-1" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">c</span>(<span class="st">&#39;dex&#39;</span>,<span class="st">&#39;trt&#39;</span>,<span class="st">&#39;untrt&#39;</span>))</span>
-<span id="cb20-2"><a href="complexheatmap.html#cb20-2" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">lfcShrink</span>(dds, <span class="at">contrast =</span> <span class="fu">c</span>(<span class="st">&#39;dex&#39;</span>,<span class="st">&#39;trt&#39;</span>,<span class="st">&#39;untrt&#39;</span>), <span class="at">res=</span>res, <span class="at">type =</span> <span class="st">&#39;normal&#39;</span>)</span></code></pre></div>
-<pre><code>## using &#39;normal&#39; for LFC shrinkage, the Normal prior from Love et al (2014).
-## 
-## Note that type=&#39;apeglm&#39; and type=&#39;ashr&#39; have shown to have less bias than type=&#39;normal&#39;.
-## See ?lfcShrink for more details on shrinkage type, and the DESeq2 vignette.
-## Reference: https://doi.org/10.1093/bioinformatics/bty895</code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="complexheatmap.html#cb22-1" tabindex="-1"></a><span class="co"># normalize counts </span></span>
-<span id="cb22-2"><a href="complexheatmap.html#cb22-2" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">vst</span>(dds)</span></code></pre></div>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="complexheatmap.html#cb23-1" tabindex="-1"></a>top_anno <span class="ot">&lt;-</span> <span class="fu">HeatmapAnnotation</span>(<span class="at">df =</span> meta_col[,<span class="fu">c</span>(<span class="st">&quot;dex&quot;</span>,<span class="st">&quot;cell&quot;</span>)], </span>
-<span id="cb23-2"><a href="complexheatmap.html#cb23-2" tabindex="-1"></a>                              <span class="at">col =</span> <span class="fu">list</span>(<span class="at">dex =</span> <span class="fu">c</span>(<span class="st">&quot;trt&quot;</span><span class="ot">=</span><span class="st">&quot;darkred&quot;</span>, <span class="st">&quot;untrt&quot;</span><span class="ot">=</span><span class="st">&quot;dodgerblue4&quot;</span>),</span>
-<span id="cb23-3"><a href="complexheatmap.html#cb23-3" tabindex="-1"></a>                                         <span class="at">cell =</span> <span class="fu">c</span>(<span class="at">N052611=</span><span class="st">&quot;#009E73&quot;</span>, <span class="at">N061011=</span><span class="st">&quot;#D55E00&quot;</span>, <span class="at">N080611=</span><span class="st">&quot;#56B4E9&quot;</span>, <span class="at">N61311=</span><span class="st">&quot;#F0E442&quot;</span>)),</span>
-<span id="cb23-4"><a href="complexheatmap.html#cb23-4" tabindex="-1"></a>                              <span class="at">border =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb23-5"><a href="complexheatmap.html#cb23-5" tabindex="-1"></a></span>
-<span id="cb23-6"><a href="complexheatmap.html#cb23-6" tabindex="-1"></a><span class="fu">draw</span>(</span>
-<span id="cb23-7"><a href="complexheatmap.html#cb23-7" tabindex="-1"></a>  <span class="fu">Heatmap</span>(<span class="fu">t</span>(<span class="fu">scale</span>(<span class="fu">t</span>(mat))), <span class="at">name =</span> <span class="st">&quot;Z-score&quot;</span>, <span class="at">border=</span><span class="cn">TRUE</span>,</span>
-<span id="cb23-8"><a href="complexheatmap.html#cb23-8" tabindex="-1"></a>          <span class="at">show_row_names =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb23-9"><a href="complexheatmap.html#cb23-9" tabindex="-1"></a>          <span class="at">show_row_dend =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb23-10"><a href="complexheatmap.html#cb23-10" tabindex="-1"></a>          <span class="at">show_column_names =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb23-11"><a href="complexheatmap.html#cb23-11" tabindex="-1"></a>          <span class="at">top_annotation =</span> top_anno),</span>
-<span id="cb23-12"><a href="complexheatmap.html#cb23-12" tabindex="-1"></a>  <span class="at">merge_legend=</span><span class="cn">TRUE</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-262-1.png" width="384" /></p>
+<span id="cb13-7"><a href="complexheatmap.html#cb13-7" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds, <span class="at">betaPrior=</span><span class="cn">FALSE</span>)</span>
+<span id="cb13-8"><a href="complexheatmap.html#cb13-8" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">contrast =</span> <span class="fu">c</span>(<span class="st">&#39;dex&#39;</span>,<span class="st">&#39;trt&#39;</span>,<span class="st">&#39;untrt&#39;</span>))</span>
+<span id="cb13-9"><a href="complexheatmap.html#cb13-9" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">lfcShrink</span>(dds, <span class="at">contrast =</span> <span class="fu">c</span>(<span class="st">&#39;dex&#39;</span>,<span class="st">&#39;trt&#39;</span>,<span class="st">&#39;untrt&#39;</span>), <span class="at">res=</span>res, <span class="at">type =</span> <span class="st">&#39;normal&#39;</span>)</span>
+<span id="cb13-10"><a href="complexheatmap.html#cb13-10" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="complexheatmap.html#cb13-11" tabindex="-1"></a><span class="co"># normalize counts </span></span>
+<span id="cb13-12"><a href="complexheatmap.html#cb13-12" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">vst</span>(dds)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="complexheatmap.html#cb14-1" tabindex="-1"></a>top_anno <span class="ot">&lt;-</span> <span class="fu">HeatmapAnnotation</span>(<span class="at">df =</span> meta_col[,<span class="fu">c</span>(<span class="st">&quot;dex&quot;</span>,<span class="st">&quot;cell&quot;</span>)], </span>
+<span id="cb14-2"><a href="complexheatmap.html#cb14-2" tabindex="-1"></a>                              <span class="at">col =</span> <span class="fu">list</span>(<span class="at">dex =</span> <span class="fu">c</span>(<span class="st">&quot;trt&quot;</span><span class="ot">=</span><span class="st">&quot;darkred&quot;</span>, <span class="st">&quot;untrt&quot;</span><span class="ot">=</span><span class="st">&quot;dodgerblue4&quot;</span>),</span>
+<span id="cb14-3"><a href="complexheatmap.html#cb14-3" tabindex="-1"></a>                                         <span class="at">cell =</span> <span class="fu">c</span>(<span class="at">N052611=</span><span class="st">&quot;#009E73&quot;</span>, <span class="at">N061011=</span><span class="st">&quot;#D55E00&quot;</span>, <span class="at">N080611=</span><span class="st">&quot;#56B4E9&quot;</span>, <span class="at">N61311=</span><span class="st">&quot;#F0E442&quot;</span>)),</span>
+<span id="cb14-4"><a href="complexheatmap.html#cb14-4" tabindex="-1"></a>                              <span class="at">border =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-5"><a href="complexheatmap.html#cb14-5" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="complexheatmap.html#cb14-6" tabindex="-1"></a><span class="fu">draw</span>(</span>
+<span id="cb14-7"><a href="complexheatmap.html#cb14-7" tabindex="-1"></a>  <span class="fu">Heatmap</span>(<span class="fu">t</span>(<span class="fu">scale</span>(<span class="fu">t</span>(mat))), <span class="at">name =</span> <span class="st">&quot;Z-score&quot;</span>, <span class="at">border=</span><span class="cn">TRUE</span>,</span>
+<span id="cb14-8"><a href="complexheatmap.html#cb14-8" tabindex="-1"></a>          <span class="at">show_row_names =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb14-9"><a href="complexheatmap.html#cb14-9" tabindex="-1"></a>          <span class="at">show_row_dend =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb14-10"><a href="complexheatmap.html#cb14-10" tabindex="-1"></a>          <span class="at">show_column_names =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb14-11"><a href="complexheatmap.html#cb14-11" tabindex="-1"></a>          <span class="at">top_annotation =</span> top_anno),</span>
+<span id="cb14-12"><a href="complexheatmap.html#cb14-12" tabindex="-1"></a>  <span class="at">merge_legend=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-17-1.png" width="384" /></p>
 <p>Usually with such a simple result (clear two groups) it is better to not use annotations and instead use text annotation</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="complexheatmap.html#cb24-1" tabindex="-1"></a>ht <span class="ot">=</span> <span class="fu">draw</span>(</span>
-<span id="cb24-2"><a href="complexheatmap.html#cb24-2" tabindex="-1"></a>  <span class="fu">Heatmap</span>(<span class="fu">t</span>(<span class="fu">scale</span>(<span class="fu">t</span>(mat))), <span class="at">name =</span> <span class="st">&quot;Z-score&quot;</span>, </span>
-<span id="cb24-3"><a href="complexheatmap.html#cb24-3" tabindex="-1"></a>          <span class="at">show_row_names =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb24-4"><a href="complexheatmap.html#cb24-4" tabindex="-1"></a>          <span class="at">show_row_dend =</span> <span class="cn">FALSE</span>, </span>
-<span id="cb24-5"><a href="complexheatmap.html#cb24-5" tabindex="-1"></a>          <span class="co"># split to get titles</span></span>
-<span id="cb24-6"><a href="complexheatmap.html#cb24-6" tabindex="-1"></a>          <span class="at">column_split =</span> meta_col<span class="sc">$</span>dex, </span>
-<span id="cb24-7"><a href="complexheatmap.html#cb24-7" tabindex="-1"></a>          <span class="co"># set dend split invisible</span></span>
-<span id="cb24-8"><a href="complexheatmap.html#cb24-8" tabindex="-1"></a>          <span class="at">show_parent_dend_line =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb24-9"><a href="complexheatmap.html#cb24-9" tabindex="-1"></a>          <span class="co"># set gap to zero for split</span></span>
-<span id="cb24-10"><a href="complexheatmap.html#cb24-10" tabindex="-1"></a>          <span class="at">column_gap =</span> <span class="fu">unit</span>(<span class="dv">0</span>, <span class="st">&quot;lines&quot;</span>),</span>
-<span id="cb24-11"><a href="complexheatmap.html#cb24-11" tabindex="-1"></a>          <span class="at">column_title_gp =</span> <span class="fu">gpar</span>(<span class="at">fontface=</span><span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb24-12"><a href="complexheatmap.html#cb24-12" tabindex="-1"></a>          <span class="at">show_column_names =</span> <span class="cn">FALSE</span>, <span class="at">column_dend_side =</span> <span class="st">&quot;bottom&quot;</span>),</span>
-<span id="cb24-13"><a href="complexheatmap.html#cb24-13" tabindex="-1"></a>  <span class="at">merge_legend=</span><span class="cn">TRUE</span>)</span>
-<span id="cb24-14"><a href="complexheatmap.html#cb24-14" tabindex="-1"></a></span>
-<span id="cb24-15"><a href="complexheatmap.html#cb24-15" tabindex="-1"></a><span class="co"># add annotation lines</span></span>
-<span id="cb24-16"><a href="complexheatmap.html#cb24-16" tabindex="-1"></a><span class="fu">decorate_column_title</span>(<span class="st">&quot;Z-score&quot;</span>, {</span>
-<span id="cb24-17"><a href="complexheatmap.html#cb24-17" tabindex="-1"></a>  <span class="fu">grid.lines</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">0.1</span>,<span class="fl">0.9</span>), <span class="at">y=</span><span class="fl">0.2</span>)</span>
-<span id="cb24-18"><a href="complexheatmap.html#cb24-18" tabindex="-1"></a>  <span class="fu">grid.lines</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">1.1</span>,<span class="fl">1.9</span>), <span class="at">y=</span><span class="fl">0.2</span>)</span>
-<span id="cb24-19"><a href="complexheatmap.html#cb24-19" tabindex="-1"></a>})</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-263-1.png" width="384" /></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="complexheatmap.html#cb15-1" tabindex="-1"></a>ht <span class="ot">=</span> <span class="fu">draw</span>(</span>
+<span id="cb15-2"><a href="complexheatmap.html#cb15-2" tabindex="-1"></a>  <span class="fu">Heatmap</span>(<span class="fu">t</span>(<span class="fu">scale</span>(<span class="fu">t</span>(mat))), <span class="at">name =</span> <span class="st">&quot;Z-score&quot;</span>, </span>
+<span id="cb15-3"><a href="complexheatmap.html#cb15-3" tabindex="-1"></a>          <span class="at">show_row_names =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb15-4"><a href="complexheatmap.html#cb15-4" tabindex="-1"></a>          <span class="at">show_row_dend =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb15-5"><a href="complexheatmap.html#cb15-5" tabindex="-1"></a>          <span class="co"># split to get titles</span></span>
+<span id="cb15-6"><a href="complexheatmap.html#cb15-6" tabindex="-1"></a>          <span class="at">column_split =</span> meta_col<span class="sc">$</span>dex, </span>
+<span id="cb15-7"><a href="complexheatmap.html#cb15-7" tabindex="-1"></a>          <span class="co"># set dend split invisible</span></span>
+<span id="cb15-8"><a href="complexheatmap.html#cb15-8" tabindex="-1"></a>          <span class="at">show_parent_dend_line =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb15-9"><a href="complexheatmap.html#cb15-9" tabindex="-1"></a>          <span class="co"># set gap to zero for split</span></span>
+<span id="cb15-10"><a href="complexheatmap.html#cb15-10" tabindex="-1"></a>          <span class="at">column_gap =</span> <span class="fu">unit</span>(<span class="dv">0</span>, <span class="st">&quot;lines&quot;</span>),</span>
+<span id="cb15-11"><a href="complexheatmap.html#cb15-11" tabindex="-1"></a>          <span class="at">column_title_gp =</span> <span class="fu">gpar</span>(<span class="at">fontface=</span><span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb15-12"><a href="complexheatmap.html#cb15-12" tabindex="-1"></a>          <span class="at">show_column_names =</span> <span class="cn">FALSE</span>, <span class="at">column_dend_side =</span> <span class="st">&quot;bottom&quot;</span>),</span>
+<span id="cb15-13"><a href="complexheatmap.html#cb15-13" tabindex="-1"></a>  <span class="at">merge_legend=</span><span class="cn">TRUE</span>)</span>
+<span id="cb15-14"><a href="complexheatmap.html#cb15-14" tabindex="-1"></a></span>
+<span id="cb15-15"><a href="complexheatmap.html#cb15-15" tabindex="-1"></a><span class="co"># add annotation lines</span></span>
+<span id="cb15-16"><a href="complexheatmap.html#cb15-16" tabindex="-1"></a><span class="fu">decorate_column_title</span>(<span class="st">&quot;Z-score&quot;</span>, {</span>
+<span id="cb15-17"><a href="complexheatmap.html#cb15-17" tabindex="-1"></a>  <span class="fu">grid.lines</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">0.1</span>,<span class="fl">0.9</span>), <span class="at">y=</span><span class="fl">0.2</span>)</span>
+<span id="cb15-18"><a href="complexheatmap.html#cb15-18" tabindex="-1"></a>  <span class="fu">grid.lines</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="fl">1.1</span>,<span class="fl">1.9</span>), <span class="at">y=</span><span class="fl">0.2</span>)</span>
+<span id="cb15-19"><a href="complexheatmap.html#cb15-19" tabindex="-1"></a>})</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-18-1.png" width="384" /></p>
 </div>
 </div>
 <div id="complex-heatmap-plot-for-cemitool-results" class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> Complex heatmap plot for CEMiTool results<a href="complexheatmap.html#complex-heatmap-plot-for-cemitool-results" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="complexheatmap.html#cb25-1" tabindex="-1"></a><span class="fu">library</span>(CEMiTool)</span>
-<span id="cb25-2"><a href="complexheatmap.html#cb25-2" tabindex="-1"></a><span class="fu">library</span>(simplifyEnrichment)</span>
-<span id="cb25-3"><a href="complexheatmap.html#cb25-3" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="complexheatmap.html#cb16-1" tabindex="-1"></a><span class="fu">library</span>(CEMiTool)</span>
+<span id="cb16-2"><a href="complexheatmap.html#cb16-2" tabindex="-1"></a><span class="fu">library</span>(simplifyEnrichment)</span>
+<span id="cb16-3"><a href="complexheatmap.html#cb16-3" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div>
 <p>First lets generate necessary</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="complexheatmap.html#cb26-1" tabindex="-1"></a><span class="co"># Get cemitools object and GMT for pathways</span></span>
-<span id="cb26-2"><a href="complexheatmap.html#cb26-2" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;cem&quot;</span>)</span>
-<span id="cb26-3"><a href="complexheatmap.html#cb26-3" tabindex="-1"></a>gmt_fname <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;pathways.gmt&quot;</span>, <span class="at">package =</span> <span class="st">&quot;CEMiTool&quot;</span>)</span>
-<span id="cb26-4"><a href="complexheatmap.html#cb26-4" tabindex="-1"></a>gmt_in <span class="ot">&lt;-</span> <span class="fu">read_gmt</span>(gmt_fname)</span>
-<span id="cb26-5"><a href="complexheatmap.html#cb26-5" tabindex="-1"></a></span>
-<span id="cb26-6"><a href="complexheatmap.html#cb26-6" tabindex="-1"></a><span class="co"># perform over representation analysis</span></span>
-<span id="cb26-7"><a href="complexheatmap.html#cb26-7" tabindex="-1"></a>cem <span class="ot">&lt;-</span> <span class="fu">mod_ora</span>(cem, gmt_in)</span>
-<span id="cb26-8"><a href="complexheatmap.html#cb26-8" tabindex="-1"></a><span class="co"># Perform module enrichment</span></span>
-<span id="cb26-9"><a href="complexheatmap.html#cb26-9" tabindex="-1"></a>cem <span class="ot">&lt;-</span> <span class="fu">mod_gsea</span>(cem)</span></code></pre></div>
-<pre><code>## Warning in fgseaMultilevel(pathways = pathways, stats = stats, minSize = minSize, : There were 1
-## pathways for which P-values were not calculated properly due to unbalanced (positive and negative)
-## gene-level statistic values. For such pathways pval, padj, NES, log2err are set to NA. You can try
-## to increase the value of the argument nPermSimple (for example set it nPermSimple = 10000)</code></pre>
-<pre><code>## Warning in fgseaMultilevel(pathways = pathways, stats = stats, minSize = minSize, : There were 3
-## pathways for which P-values were not calculated properly due to unbalanced (positive and negative)
-## gene-level statistic values. For such pathways pval, padj, NES, log2err are set to NA. You can try
-## to increase the value of the argument nPermSimple (for example set it nPermSimple = 10000)</code></pre>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="complexheatmap.html#cb29-1" tabindex="-1"></a>module_genes <span class="ot">&lt;-</span> <span class="fu">module_genes</span>(cem)</span>
-<span id="cb29-2"><a href="complexheatmap.html#cb29-2" tabindex="-1"></a>module_genes <span class="ot">&lt;-</span> module_genes[module_genes<span class="sc">$</span>modules <span class="sc">!=</span> <span class="st">&quot;Not.Correlated&quot;</span>, ]</span>
-<span id="cb29-3"><a href="complexheatmap.html#cb29-3" tabindex="-1"></a></span>
-<span id="cb29-4"><a href="complexheatmap.html#cb29-4" tabindex="-1"></a>exp_mat <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">scale</span>(<span class="fu">t</span>(<span class="fu">as.matrix</span>(cem<span class="sc">@</span>expression[module_genes<span class="sc">$</span>genes,]))))</span>
-<span id="cb29-5"><a href="complexheatmap.html#cb29-5" tabindex="-1"></a></span>
-<span id="cb29-6"><a href="complexheatmap.html#cb29-6" tabindex="-1"></a>ora_res <span class="ot">&lt;-</span> cem<span class="sc">@</span>ora</span>
-<span id="cb29-7"><a href="complexheatmap.html#cb29-7" tabindex="-1"></a>terms2anno <span class="ot">&lt;-</span> ora_res <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(p.adjust<span class="sc">&lt;</span><span class="fl">0.05</span>) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">ID=</span><span class="fu">gsub</span>(<span class="st">&quot;_.*&quot;</span>, <span class="st">&quot;&quot;</span>, ID)) <span class="sc">%&gt;%</span> </span>
-<span id="cb29-8"><a href="complexheatmap.html#cb29-8" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Module, ID) <span class="sc">%&gt;%</span> </span>
-<span id="cb29-9"><a href="complexheatmap.html#cb29-9" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Module<span class="sc">!=</span><span class="st">&quot;Not.Correlated&quot;</span>)</span>
-<span id="cb29-10"><a href="complexheatmap.html#cb29-10" tabindex="-1"></a>terms2anno <span class="ot">&lt;-</span> <span class="fu">split</span>(terms2anno<span class="sc">$</span>ID, terms2anno<span class="sc">$</span>Module)</span></code></pre></div>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="complexheatmap.html#cb30-1" tabindex="-1"></a>col_scale <span class="ot">&lt;-</span> circlize<span class="sc">::</span><span class="fu">colorRamp2</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">4</span>,<span class="dv">0</span>,<span class="dv">4</span>), <span class="at">colors =</span> <span class="fu">c</span>(<span class="st">&quot;dodgerblue4&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;darkorange&quot;</span>))</span>
-<span id="cb30-2"><a href="complexheatmap.html#cb30-2" tabindex="-1"></a></span>
-<span id="cb30-3"><a href="complexheatmap.html#cb30-3" tabindex="-1"></a>row_annot <span class="ot">&lt;-</span> <span class="fu">rowAnnotation</span>(<span class="st">`</span><span class="at">GO ORA</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">anno_word_cloud</span>(module_genes<span class="sc">$</span>modules, </span>
-<span id="cb30-4"><a href="complexheatmap.html#cb30-4" tabindex="-1"></a>                                                              terms2anno, <span class="at">max_words =</span> <span class="dv">15</span>,</span>
-<span id="cb30-5"><a href="complexheatmap.html#cb30-5" tabindex="-1"></a>                                                              <span class="at">bg_gp =</span> <span class="fu">gpar</span>(<span class="at">fill =</span> <span class="st">&quot;white&quot;</span>, </span>
-<span id="cb30-6"><a href="complexheatmap.html#cb30-6" tabindex="-1"></a>                                                                           <span class="at">col =</span> <span class="st">&quot;black&quot;</span>), </span>
-<span id="cb30-7"><a href="complexheatmap.html#cb30-7" tabindex="-1"></a>                                                              <span class="at">fontsize_range=</span><span class="fu">c</span>(<span class="dv">9</span>,<span class="dv">11</span>)),  </span>
-<span id="cb30-8"><a href="complexheatmap.html#cb30-8" tabindex="-1"></a>                           <span class="at">gap =</span> <span class="fu">unit</span>(<span class="dv">0</span>, <span class="st">&quot;mm&quot;</span>),</span>
-<span id="cb30-9"><a href="complexheatmap.html#cb30-9" tabindex="-1"></a>                           <span class="at">show_annotation_name=</span><span class="cn">TRUE</span>)</span>
-<span id="cb30-10"><a href="complexheatmap.html#cb30-10" tabindex="-1"></a></span>
-<span id="cb30-11"><a href="complexheatmap.html#cb30-11" tabindex="-1"></a>top_anno <span class="ot">=</span> <span class="fu">HeatmapAnnotation</span>(<span class="at">Timepoint=</span><span class="fu">gsub</span>(<span class="st">&quot;.*._d&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="fu">colnames</span>(exp_mat)),</span>
-<span id="cb30-12"><a href="complexheatmap.html#cb30-12" tabindex="-1"></a>                             <span class="at">col =</span> <span class="fu">list</span>(<span class="at">Timepoint=</span><span class="fu">c</span>(<span class="st">&quot;0&quot;</span><span class="ot">=</span><span class="st">&quot;lightblue&quot;</span>, </span>
-<span id="cb30-13"><a href="complexheatmap.html#cb30-13" tabindex="-1"></a>                                                    <span class="st">&quot;3&quot;</span><span class="ot">=</span><span class="st">&quot;dodgerblue&quot;</span>, </span>
-<span id="cb30-14"><a href="complexheatmap.html#cb30-14" tabindex="-1"></a>                                                    <span class="st">&quot;7&quot;</span><span class="ot">=</span><span class="st">&quot;dodgerblue4&quot;</span>)))</span>
-<span id="cb30-15"><a href="complexheatmap.html#cb30-15" tabindex="-1"></a></span>
-<span id="cb30-16"><a href="complexheatmap.html#cb30-16" tabindex="-1"></a><span class="fu">draw</span>(<span class="fu">Heatmap</span>(exp_mat, <span class="at">name=</span><span class="st">&quot;Expression (VST)&quot;</span>,</span>
-<span id="cb30-17"><a href="complexheatmap.html#cb30-17" tabindex="-1"></a>       <span class="at">split =</span> module_genes<span class="sc">$</span>modules, </span>
-<span id="cb30-18"><a href="complexheatmap.html#cb30-18" tabindex="-1"></a>       <span class="at">border=</span>T,</span>
-<span id="cb30-19"><a href="complexheatmap.html#cb30-19" tabindex="-1"></a>       <span class="at">show_row_names =</span> <span class="cn">FALSE</span>, </span>
-<span id="cb30-20"><a href="complexheatmap.html#cb30-20" tabindex="-1"></a>       <span class="at">show_column_names =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb30-21"><a href="complexheatmap.html#cb30-21" tabindex="-1"></a>       <span class="at">show_row_dend =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb30-22"><a href="complexheatmap.html#cb30-22" tabindex="-1"></a>       <span class="at">right_annotation =</span> row_annot,</span>
-<span id="cb30-23"><a href="complexheatmap.html#cb30-23" tabindex="-1"></a>       <span class="at">top_annotation =</span> top_anno,</span>
-<span id="cb30-24"><a href="complexheatmap.html#cb30-24" tabindex="-1"></a>       <span class="at">col =</span> col_scale, </span>
-<span id="cb30-25"><a href="complexheatmap.html#cb30-25" tabindex="-1"></a>       <span class="at">heatmap_legend_param =</span> <span class="fu">list</span>(<span class="at">legend_direction =</span> <span class="st">&quot;horizontal&quot;</span>)),</span>
-<span id="cb30-26"><a href="complexheatmap.html#cb30-26" tabindex="-1"></a>     <span class="at">merge_legends =</span> T, <span class="at">heatmap_legend_side =</span> <span class="st">&quot;bottom&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-267-1.png" width="576" /></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="complexheatmap.html#cb17-1" tabindex="-1"></a><span class="co"># Get cemitools object and GMT for pathways</span></span>
+<span id="cb17-2"><a href="complexheatmap.html#cb17-2" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;cem&quot;</span>)</span>
+<span id="cb17-3"><a href="complexheatmap.html#cb17-3" tabindex="-1"></a>gmt_fname <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;pathways.gmt&quot;</span>, <span class="at">package =</span> <span class="st">&quot;CEMiTool&quot;</span>)</span>
+<span id="cb17-4"><a href="complexheatmap.html#cb17-4" tabindex="-1"></a>gmt_in <span class="ot">&lt;-</span> <span class="fu">read_gmt</span>(gmt_fname)</span>
+<span id="cb17-5"><a href="complexheatmap.html#cb17-5" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="complexheatmap.html#cb17-6" tabindex="-1"></a><span class="co"># perform over representation analysis</span></span>
+<span id="cb17-7"><a href="complexheatmap.html#cb17-7" tabindex="-1"></a>cem <span class="ot">&lt;-</span> <span class="fu">mod_ora</span>(cem, gmt_in)</span>
+<span id="cb17-8"><a href="complexheatmap.html#cb17-8" tabindex="-1"></a><span class="co"># Perform module enrichment</span></span>
+<span id="cb17-9"><a href="complexheatmap.html#cb17-9" tabindex="-1"></a>cem <span class="ot">&lt;-</span> <span class="fu">mod_gsea</span>(cem)</span></code></pre></div>
+<pre><code>## Warning in fgseaMultilevel(pathways = pathways, stats = stats, minSize = minSize, : There were 1 pathways for which P-values were not
+## calculated properly due to unbalanced (positive and negative) gene-level statistic values. For such pathways pval, padj, NES, log2err
+## are set to NA. You can try to increase the value of the argument nPermSimple (for example set it nPermSimple = 10000)</code></pre>
+<pre><code>## Warning in fgseaMultilevel(pathways = pathways, stats = stats, minSize = minSize, : There were 2 pathways for which P-values were not
+## calculated properly due to unbalanced (positive and negative) gene-level statistic values. For such pathways pval, padj, NES, log2err
+## are set to NA. You can try to increase the value of the argument nPermSimple (for example set it nPermSimple = 10000)</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="complexheatmap.html#cb20-1" tabindex="-1"></a><span class="co"># Get genes in coexp modules</span></span>
+<span id="cb20-2"><a href="complexheatmap.html#cb20-2" tabindex="-1"></a>module_genes <span class="ot">&lt;-</span> <span class="fu">module_genes</span>(cem)</span>
+<span id="cb20-3"><a href="complexheatmap.html#cb20-3" tabindex="-1"></a>module_genes <span class="ot">&lt;-</span> module_genes[module_genes<span class="sc">$</span>modules <span class="sc">!=</span> <span class="st">&quot;Not.Correlated&quot;</span>, ]</span>
+<span id="cb20-4"><a href="complexheatmap.html#cb20-4" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="complexheatmap.html#cb20-5" tabindex="-1"></a><span class="co"># standardize counts</span></span>
+<span id="cb20-6"><a href="complexheatmap.html#cb20-6" tabindex="-1"></a>exp_mat <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">scale</span>(<span class="fu">t</span>(<span class="fu">as.matrix</span>(cem<span class="sc">@</span>expression[module_genes<span class="sc">$</span>genes,]))))</span>
+<span id="cb20-7"><a href="complexheatmap.html#cb20-7" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="complexheatmap.html#cb20-8" tabindex="-1"></a><span class="co"># Get ORA res terms</span></span>
+<span id="cb20-9"><a href="complexheatmap.html#cb20-9" tabindex="-1"></a>ora_res <span class="ot">&lt;-</span> cem<span class="sc">@</span>ora</span>
+<span id="cb20-10"><a href="complexheatmap.html#cb20-10" tabindex="-1"></a>terms2anno <span class="ot">&lt;-</span> ora_res <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(p.adjust<span class="sc">&lt;</span><span class="fl">0.05</span>) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">ID=</span><span class="fu">gsub</span>(<span class="st">&quot;_.*&quot;</span>, <span class="st">&quot;&quot;</span>, ID)) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-11"><a href="complexheatmap.html#cb20-11" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Module, ID) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-12"><a href="complexheatmap.html#cb20-12" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Module<span class="sc">!=</span><span class="st">&quot;Not.Correlated&quot;</span>)</span>
+<span id="cb20-13"><a href="complexheatmap.html#cb20-13" tabindex="-1"></a>terms2anno <span class="ot">&lt;-</span> <span class="fu">split</span>(terms2anno<span class="sc">$</span>ID, terms2anno<span class="sc">$</span>Module)</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="complexheatmap.html#cb21-1" tabindex="-1"></a><span class="co"># set colour scale to be universally the same</span></span>
+<span id="cb21-2"><a href="complexheatmap.html#cb21-2" tabindex="-1"></a>col_scale <span class="ot">&lt;-</span> circlize<span class="sc">::</span><span class="fu">colorRamp2</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">4</span>,<span class="dv">0</span>,<span class="dv">4</span>), <span class="at">colors =</span> <span class="fu">c</span>(<span class="st">&quot;dodgerblue4&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;darkorange&quot;</span>))</span>
+<span id="cb21-3"><a href="complexheatmap.html#cb21-3" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="complexheatmap.html#cb21-4" tabindex="-1"></a><span class="co"># row annotation wordclouds</span></span>
+<span id="cb21-5"><a href="complexheatmap.html#cb21-5" tabindex="-1"></a>row_annot <span class="ot">&lt;-</span> <span class="fu">rowAnnotation</span>(<span class="st">`</span><span class="at">GO ORA</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">anno_word_cloud</span>(module_genes<span class="sc">$</span>modules, </span>
+<span id="cb21-6"><a href="complexheatmap.html#cb21-6" tabindex="-1"></a>                                                              terms2anno, <span class="at">max_words =</span> <span class="dv">15</span>,</span>
+<span id="cb21-7"><a href="complexheatmap.html#cb21-7" tabindex="-1"></a>                                                              <span class="at">bg_gp =</span> <span class="fu">gpar</span>(<span class="at">fill =</span> <span class="st">&quot;white&quot;</span>, </span>
+<span id="cb21-8"><a href="complexheatmap.html#cb21-8" tabindex="-1"></a>                                                                           <span class="at">col =</span> <span class="st">&quot;black&quot;</span>), </span>
+<span id="cb21-9"><a href="complexheatmap.html#cb21-9" tabindex="-1"></a>                                                              <span class="at">fontsize_range=</span><span class="fu">c</span>(<span class="dv">9</span>,<span class="dv">11</span>)),  </span>
+<span id="cb21-10"><a href="complexheatmap.html#cb21-10" tabindex="-1"></a>                           <span class="at">gap =</span> <span class="fu">unit</span>(<span class="dv">0</span>, <span class="st">&quot;mm&quot;</span>),</span>
+<span id="cb21-11"><a href="complexheatmap.html#cb21-11" tabindex="-1"></a>                           <span class="at">show_annotation_name=</span><span class="cn">TRUE</span>)</span>
+<span id="cb21-12"><a href="complexheatmap.html#cb21-12" tabindex="-1"></a></span>
+<span id="cb21-13"><a href="complexheatmap.html#cb21-13" tabindex="-1"></a><span class="co"># top annotation</span></span>
+<span id="cb21-14"><a href="complexheatmap.html#cb21-14" tabindex="-1"></a>top_anno <span class="ot">=</span> <span class="fu">HeatmapAnnotation</span>(<span class="at">Timepoint=</span><span class="fu">gsub</span>(<span class="st">&quot;.*._d&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="fu">colnames</span>(exp_mat)),</span>
+<span id="cb21-15"><a href="complexheatmap.html#cb21-15" tabindex="-1"></a>                             <span class="at">col =</span> <span class="fu">list</span>(<span class="at">Timepoint=</span><span class="fu">c</span>(<span class="st">&quot;0&quot;</span><span class="ot">=</span><span class="st">&quot;lightblue&quot;</span>, </span>
+<span id="cb21-16"><a href="complexheatmap.html#cb21-16" tabindex="-1"></a>                                                    <span class="st">&quot;3&quot;</span><span class="ot">=</span><span class="st">&quot;dodgerblue&quot;</span>, </span>
+<span id="cb21-17"><a href="complexheatmap.html#cb21-17" tabindex="-1"></a>                                                    <span class="st">&quot;7&quot;</span><span class="ot">=</span><span class="st">&quot;dodgerblue4&quot;</span>)))</span>
+<span id="cb21-18"><a href="complexheatmap.html#cb21-18" tabindex="-1"></a></span>
+<span id="cb21-19"><a href="complexheatmap.html#cb21-19" tabindex="-1"></a><span class="fu">draw</span>(<span class="fu">Heatmap</span>(exp_mat, <span class="at">name=</span><span class="st">&quot;Expression (VST)&quot;</span>,</span>
+<span id="cb21-20"><a href="complexheatmap.html#cb21-20" tabindex="-1"></a>       <span class="at">split =</span> module_genes<span class="sc">$</span>modules, </span>
+<span id="cb21-21"><a href="complexheatmap.html#cb21-21" tabindex="-1"></a>       <span class="at">border=</span>T,</span>
+<span id="cb21-22"><a href="complexheatmap.html#cb21-22" tabindex="-1"></a>       <span class="at">show_row_names =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb21-23"><a href="complexheatmap.html#cb21-23" tabindex="-1"></a>       <span class="at">show_column_names =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb21-24"><a href="complexheatmap.html#cb21-24" tabindex="-1"></a>       <span class="at">show_row_dend =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb21-25"><a href="complexheatmap.html#cb21-25" tabindex="-1"></a>       <span class="at">right_annotation =</span> row_annot,</span>
+<span id="cb21-26"><a href="complexheatmap.html#cb21-26" tabindex="-1"></a>       <span class="at">top_annotation =</span> top_anno,</span>
+<span id="cb21-27"><a href="complexheatmap.html#cb21-27" tabindex="-1"></a>       <span class="at">col =</span> col_scale, </span>
+<span id="cb21-28"><a href="complexheatmap.html#cb21-28" tabindex="-1"></a>       <span class="at">heatmap_legend_param =</span> <span class="fu">list</span>(<span class="at">legend_direction =</span> <span class="st">&quot;horizontal&quot;</span>)),</span>
+<span id="cb21-29"><a href="complexheatmap.html#cb21-29" tabindex="-1"></a>     <span class="at">merge_legends =</span> T, <span class="at">heatmap_legend_side =</span> <span class="st">&quot;bottom&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-22-1.png" width="576" /></p>
 <p>We can also add annotation using other plotting tools, such as ggplot2 by generating a custom panel annotating function that uses indexes.</p>
 <p>Two of the four modules presented interesting results in the ORA.</p>
 <p>We can generate a function that creates Enrichment analysis bar plots for the modules and use that later with <code>anno_zoom()</code>.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="complexheatmap.html#cb31-1" tabindex="-1"></a>panel_fun_enr_results <span class="ot">=</span> <span class="cf">function</span>(index, nm) {</span>
-<span id="cb31-2"><a href="complexheatmap.html#cb31-2" tabindex="-1"></a>  </span>
-<span id="cb31-3"><a href="complexheatmap.html#cb31-3" tabindex="-1"></a>  <span class="co"># Get the module for selected indices</span></span>
-<span id="cb31-4"><a href="complexheatmap.html#cb31-4" tabindex="-1"></a>  mod <span class="ot">&lt;-</span> module_genes <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(genes <span class="sc">%in%</span> <span class="fu">rownames</span>(exp_mat)[index]) <span class="sc">%&gt;%</span> </span>
-<span id="cb31-5"><a href="complexheatmap.html#cb31-5" tabindex="-1"></a>    .<span class="sc">$</span>modules <span class="sc">%&gt;%</span> <span class="fu">unique</span>()</span>
-<span id="cb31-6"><a href="complexheatmap.html#cb31-6" tabindex="-1"></a>  </span>
-<span id="cb31-7"><a href="complexheatmap.html#cb31-7" tabindex="-1"></a>  <span class="co"># Get top 5 hits from the ORA results</span></span>
-<span id="cb31-8"><a href="complexheatmap.html#cb31-8" tabindex="-1"></a>  res_toplot <span class="ot">&lt;-</span> ora_res <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(Module <span class="sc">%in%</span> mod) <span class="sc">%&gt;%</span> </span>
-<span id="cb31-9"><a href="complexheatmap.html#cb31-9" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">ID=</span>stringr<span class="sc">::</span><span class="fu">str_trunc</span>(ID, <span class="dv">30</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb31-10"><a href="complexheatmap.html#cb31-10" tabindex="-1"></a>    <span class="fu">arrange</span>(p.adjust) <span class="sc">%&gt;%</span></span>
-<span id="cb31-11"><a href="complexheatmap.html#cb31-11" tabindex="-1"></a>    <span class="fu">slice_head</span>(<span class="at">n=</span><span class="dv">5</span>)</span>
-<span id="cb31-12"><a href="complexheatmap.html#cb31-12" tabindex="-1"></a>  </span>
-<span id="cb31-13"><a href="complexheatmap.html#cb31-13" tabindex="-1"></a>  <span class="co"># Generate the plot</span></span>
-<span id="cb31-14"><a href="complexheatmap.html#cb31-14" tabindex="-1"></a>  g <span class="ot">=</span> <span class="fu">ggplot</span>(res_toplot, <span class="fu">aes</span>(<span class="at">x =</span> <span class="sc">-</span><span class="fu">log10</span>(p.adjust), </span>
-<span id="cb31-15"><a href="complexheatmap.html#cb31-15" tabindex="-1"></a>                             <span class="at">y =</span> forcats<span class="sc">::</span><span class="fu">fct_reorder</span>(ID, <span class="sc">-</span>p.adjust),</span>
-<span id="cb31-16"><a href="complexheatmap.html#cb31-16" tabindex="-1"></a>                             <span class="at">fill=</span>FoldEnrichment)) <span class="sc">+</span> </span>
-<span id="cb31-17"><a href="complexheatmap.html#cb31-17" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">&quot;identity&quot;</span>, <span class="at">alpha=</span><span class="fl">0.8</span>, <span class="at">colour=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
-<span id="cb31-18"><a href="complexheatmap.html#cb31-18" tabindex="-1"></a>    <span class="fu">theme_bw</span>(<span class="dv">12</span>) <span class="sc">+</span></span>
-<span id="cb31-19"><a href="complexheatmap.html#cb31-19" tabindex="-1"></a>    <span class="fu">scale_x_sqrt</span>(<span class="at">expand=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">25</span>)) <span class="sc">+</span></span>
-<span id="cb31-20"><a href="complexheatmap.html#cb31-20" tabindex="-1"></a>    <span class="fu">scale_fill_gradientn</span>(<span class="at">colours=</span><span class="fu">c</span>(<span class="st">&quot;turquoise&quot;</span>, <span class="st">&quot;darkblue&quot;</span>), <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">50</span>)) <span class="sc">+</span></span>
-<span id="cb31-21"><a href="complexheatmap.html#cb31-21" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="sc">-</span><span class="fu">log10</span>(<span class="fl">0.05</span>)) <span class="sc">+</span></span>
-<span id="cb31-22"><a href="complexheatmap.html#cb31-22" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb31-23"><a href="complexheatmap.html#cb31-23" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">&quot;black&quot;</span>),</span>
-<span id="cb31-24"><a href="complexheatmap.html#cb31-24" tabindex="-1"></a>        <span class="at">axis.ticks.length =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">&quot;lines&quot;</span>),</span>
-<span id="cb31-25"><a href="complexheatmap.html#cb31-25" tabindex="-1"></a>        <span class="at">axis.line =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb31-26"><a href="complexheatmap.html#cb31-26" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>),</span>
-<span id="cb31-27"><a href="complexheatmap.html#cb31-27" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>(), </span>
-<span id="cb31-28"><a href="complexheatmap.html#cb31-28" tabindex="-1"></a>        <span class="at">panel.grid =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb31-29"><a href="complexheatmap.html#cb31-29" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
-<span id="cb31-30"><a href="complexheatmap.html#cb31-30" tabindex="-1"></a>  </span>
-<span id="cb31-31"><a href="complexheatmap.html#cb31-31" tabindex="-1"></a>  <span class="co"># Make a grob and push it from viewport  </span></span>
-<span id="cb31-32"><a href="complexheatmap.html#cb31-32" tabindex="-1"></a>  g <span class="ot">=</span> <span class="fu">grid.grabExpr</span>(<span class="fu">print</span>(g))</span>
-<span id="cb31-33"><a href="complexheatmap.html#cb31-33" tabindex="-1"></a>  <span class="fu">pushViewport</span>(<span class="fu">viewport</span>())</span>
-<span id="cb31-34"><a href="complexheatmap.html#cb31-34" tabindex="-1"></a>  <span class="fu">grid.rect</span>()</span>
-<span id="cb31-35"><a href="complexheatmap.html#cb31-35" tabindex="-1"></a>  <span class="fu">grid.draw</span>(g)</span>
-<span id="cb31-36"><a href="complexheatmap.html#cb31-36" tabindex="-1"></a>  <span class="fu">popViewport</span>()</span>
-<span id="cb31-37"><a href="complexheatmap.html#cb31-37" tabindex="-1"></a>  </span>
-<span id="cb31-38"><a href="complexheatmap.html#cb31-38" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="complexheatmap.html#cb22-1" tabindex="-1"></a>panel_fun_enr_results <span class="ot">=</span> <span class="cf">function</span>(index, nm) {</span>
+<span id="cb22-2"><a href="complexheatmap.html#cb22-2" tabindex="-1"></a>  </span>
+<span id="cb22-3"><a href="complexheatmap.html#cb22-3" tabindex="-1"></a>  <span class="co"># Get the module for selected indices</span></span>
+<span id="cb22-4"><a href="complexheatmap.html#cb22-4" tabindex="-1"></a>  mod <span class="ot">&lt;-</span> module_genes <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(genes <span class="sc">%in%</span> <span class="fu">rownames</span>(exp_mat)[index]) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-5"><a href="complexheatmap.html#cb22-5" tabindex="-1"></a>    .<span class="sc">$</span>modules <span class="sc">%&gt;%</span> <span class="fu">unique</span>()</span>
+<span id="cb22-6"><a href="complexheatmap.html#cb22-6" tabindex="-1"></a>  </span>
+<span id="cb22-7"><a href="complexheatmap.html#cb22-7" tabindex="-1"></a>  <span class="co"># Get top 5 hits from the ORA results</span></span>
+<span id="cb22-8"><a href="complexheatmap.html#cb22-8" tabindex="-1"></a>  res_toplot <span class="ot">&lt;-</span> ora_res <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(Module <span class="sc">%in%</span> mod) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-9"><a href="complexheatmap.html#cb22-9" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">ID=</span>stringr<span class="sc">::</span><span class="fu">str_trunc</span>(ID, <span class="dv">30</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb22-10"><a href="complexheatmap.html#cb22-10" tabindex="-1"></a>    <span class="fu">arrange</span>(p.adjust) <span class="sc">%&gt;%</span></span>
+<span id="cb22-11"><a href="complexheatmap.html#cb22-11" tabindex="-1"></a>    <span class="fu">slice_head</span>(<span class="at">n=</span><span class="dv">5</span>)</span>
+<span id="cb22-12"><a href="complexheatmap.html#cb22-12" tabindex="-1"></a>  </span>
+<span id="cb22-13"><a href="complexheatmap.html#cb22-13" tabindex="-1"></a>  <span class="co"># Generate the plot</span></span>
+<span id="cb22-14"><a href="complexheatmap.html#cb22-14" tabindex="-1"></a>  g <span class="ot">=</span> <span class="fu">ggplot</span>(res_toplot, <span class="fu">aes</span>(<span class="at">x =</span> <span class="sc">-</span><span class="fu">log10</span>(p.adjust), </span>
+<span id="cb22-15"><a href="complexheatmap.html#cb22-15" tabindex="-1"></a>                             <span class="at">y =</span> forcats<span class="sc">::</span><span class="fu">fct_reorder</span>(ID, <span class="sc">-</span>p.adjust),</span>
+<span id="cb22-16"><a href="complexheatmap.html#cb22-16" tabindex="-1"></a>                             <span class="at">fill=</span>FoldEnrichment)) <span class="sc">+</span> </span>
+<span id="cb22-17"><a href="complexheatmap.html#cb22-17" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">&quot;identity&quot;</span>, <span class="at">alpha=</span><span class="fl">0.8</span>, <span class="at">colour=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb22-18"><a href="complexheatmap.html#cb22-18" tabindex="-1"></a>    <span class="fu">theme_bw</span>(<span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb22-19"><a href="complexheatmap.html#cb22-19" tabindex="-1"></a>    <span class="fu">scale_x_sqrt</span>(<span class="at">expand=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">25</span>)) <span class="sc">+</span></span>
+<span id="cb22-20"><a href="complexheatmap.html#cb22-20" tabindex="-1"></a>    <span class="fu">scale_fill_gradientn</span>(<span class="at">colours=</span><span class="fu">c</span>(<span class="st">&quot;turquoise&quot;</span>, <span class="st">&quot;darkblue&quot;</span>), <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">50</span>)) <span class="sc">+</span></span>
+<span id="cb22-21"><a href="complexheatmap.html#cb22-21" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="sc">-</span><span class="fu">log10</span>(<span class="fl">0.05</span>), <span class="at">linetype=</span><span class="st">&quot;dashed&quot;</span>) <span class="sc">+</span></span>
+<span id="cb22-22"><a href="complexheatmap.html#cb22-22" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb22-23"><a href="complexheatmap.html#cb22-23" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">colour=</span><span class="st">&quot;black&quot;</span>),</span>
+<span id="cb22-24"><a href="complexheatmap.html#cb22-24" tabindex="-1"></a>        <span class="at">axis.ticks.length =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">&quot;lines&quot;</span>),</span>
+<span id="cb22-25"><a href="complexheatmap.html#cb22-25" tabindex="-1"></a>        <span class="at">axis.line =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb22-26"><a href="complexheatmap.html#cb22-26" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>),</span>
+<span id="cb22-27"><a href="complexheatmap.html#cb22-27" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>(), </span>
+<span id="cb22-28"><a href="complexheatmap.html#cb22-28" tabindex="-1"></a>        <span class="at">panel.grid =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb22-29"><a href="complexheatmap.html#cb22-29" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb22-30"><a href="complexheatmap.html#cb22-30" tabindex="-1"></a>  </span>
+<span id="cb22-31"><a href="complexheatmap.html#cb22-31" tabindex="-1"></a>  <span class="co"># Make a grob and push it from viewport  </span></span>
+<span id="cb22-32"><a href="complexheatmap.html#cb22-32" tabindex="-1"></a>  g <span class="ot">=</span> <span class="fu">grid.grabExpr</span>(<span class="fu">print</span>(g))</span>
+<span id="cb22-33"><a href="complexheatmap.html#cb22-33" tabindex="-1"></a>  <span class="fu">pushViewport</span>(<span class="fu">viewport</span>())</span>
+<span id="cb22-34"><a href="complexheatmap.html#cb22-34" tabindex="-1"></a>  <span class="fu">grid.rect</span>()</span>
+<span id="cb22-35"><a href="complexheatmap.html#cb22-35" tabindex="-1"></a>  <span class="fu">grid.draw</span>(g)</span>
+<span id="cb22-36"><a href="complexheatmap.html#cb22-36" tabindex="-1"></a>  <span class="fu">popViewport</span>()</span>
+<span id="cb22-37"><a href="complexheatmap.html#cb22-37" tabindex="-1"></a>  </span>
+<span id="cb22-38"><a href="complexheatmap.html#cb22-38" tabindex="-1"></a>}</span></code></pre></div>
 <p>We can now add the barplots for the indices that we define. In this case for M1 and M3. We can additionally add titles for the annotation boxes separately by pushing grid.text to view port.</p>
 <p>To list all available components of the plot for coordinate selection you can use <code>list_components()</code> from ComplexHeatmap.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="complexheatmap.html#cb32-1" tabindex="-1"></a><span class="co"># interesting module indices</span></span>
-<span id="cb32-2"><a href="complexheatmap.html#cb32-2" tabindex="-1"></a>ind_list <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">&quot;M1&quot;</span>, <span class="st">&quot;M3&quot;</span>), <span class="cf">function</span>(x) {</span>
-<span id="cb32-3"><a href="complexheatmap.html#cb32-3" tabindex="-1"></a> <span class="co"># Get genes and positions</span></span>
-<span id="cb32-4"><a href="complexheatmap.html#cb32-4" tabindex="-1"></a> genes <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(module_genes, modules <span class="sc">%in%</span> x)<span class="sc">$</span>genes</span>
-<span id="cb32-5"><a href="complexheatmap.html#cb32-5" tabindex="-1"></a> <span class="fu">which</span>(<span class="fu">rownames</span>(exp_mat) <span class="sc">%in%</span> genes)</span>
-<span id="cb32-6"><a href="complexheatmap.html#cb32-6" tabindex="-1"></a>})</span>
-<span id="cb32-7"><a href="complexheatmap.html#cb32-7" tabindex="-1"></a></span>
-<span id="cb32-8"><a href="complexheatmap.html#cb32-8" tabindex="-1"></a><span class="co"># Generate row annotation </span></span>
-<span id="cb32-9"><a href="complexheatmap.html#cb32-9" tabindex="-1"></a>row_annot <span class="ot">&lt;-</span> <span class="fu">rowAnnotation</span>(<span class="st">`</span><span class="at">GO ORA</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">anno_zoom</span>(<span class="at">align_to =</span> ind_list, </span>
-<span id="cb32-10"><a href="complexheatmap.html#cb32-10" tabindex="-1"></a>                                                <span class="at">which =</span> <span class="st">&quot;row&quot;</span>, </span>
-<span id="cb32-11"><a href="complexheatmap.html#cb32-11" tabindex="-1"></a>                                                <span class="at">panel_fun =</span> panel_fun_enr_results, </span>
-<span id="cb32-12"><a href="complexheatmap.html#cb32-12" tabindex="-1"></a>                                                <span class="co"># Set size for the annotation</span></span>
-<span id="cb32-13"><a href="complexheatmap.html#cb32-13" tabindex="-1"></a>                                                <span class="at">size =</span> <span class="fu">unit</span>(<span class="dv">5</span>, <span class="st">&quot;cm&quot;</span>), </span>
-<span id="cb32-14"><a href="complexheatmap.html#cb32-14" tabindex="-1"></a>                                                <span class="at">width =</span> <span class="fu">unit</span>(<span class="fl">10.5</span>, <span class="st">&quot;cm&quot;</span>)))</span>
-<span id="cb32-15"><a href="complexheatmap.html#cb32-15" tabindex="-1"></a></span>
-<span id="cb32-16"><a href="complexheatmap.html#cb32-16" tabindex="-1"></a><span class="co"># Generate top annotation</span></span>
-<span id="cb32-17"><a href="complexheatmap.html#cb32-17" tabindex="-1"></a>top_anno <span class="ot">=</span> <span class="fu">HeatmapAnnotation</span>(<span class="at">Timepoint=</span><span class="fu">gsub</span>(<span class="st">&quot;.*._d&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="fu">colnames</span>(exp_mat)),</span>
-<span id="cb32-18"><a href="complexheatmap.html#cb32-18" tabindex="-1"></a>                             <span class="at">annotation_name_side =</span> <span class="st">&quot;left&quot;</span>, </span>
-<span id="cb32-19"><a href="complexheatmap.html#cb32-19" tabindex="-1"></a>                             <span class="at">annotation_legend_param =</span> <span class="fu">list</span>(</span>
-<span id="cb32-20"><a href="complexheatmap.html#cb32-20" tabindex="-1"></a>                               <span class="at">Timepoint =</span> <span class="fu">list</span>(<span class="at">legend_direction =</span> <span class="st">&quot;horizontal&quot;</span>)),</span>
-<span id="cb32-21"><a href="complexheatmap.html#cb32-21" tabindex="-1"></a>                             <span class="at">col =</span> <span class="fu">list</span>(<span class="at">Timepoint=</span><span class="fu">c</span>(<span class="st">&quot;0&quot;</span><span class="ot">=</span><span class="st">&quot;lightblue&quot;</span>, </span>
-<span id="cb32-22"><a href="complexheatmap.html#cb32-22" tabindex="-1"></a>                                                    <span class="st">&quot;3&quot;</span><span class="ot">=</span><span class="st">&quot;dodgerblue&quot;</span>, </span>
-<span id="cb32-23"><a href="complexheatmap.html#cb32-23" tabindex="-1"></a>                                                    <span class="st">&quot;7&quot;</span><span class="ot">=</span><span class="st">&quot;dodgerblue4&quot;</span>)))</span>
-<span id="cb32-24"><a href="complexheatmap.html#cb32-24" tabindex="-1"></a></span>
-<span id="cb32-25"><a href="complexheatmap.html#cb32-25" tabindex="-1"></a><span class="fu">draw</span>(<span class="fu">Heatmap</span>(exp_mat, <span class="at">name=</span><span class="st">&quot;Z-score&quot;</span>,</span>
-<span id="cb32-26"><a href="complexheatmap.html#cb32-26" tabindex="-1"></a>       <span class="at">split =</span> module_genes<span class="sc">$</span>modules, </span>
-<span id="cb32-27"><a href="complexheatmap.html#cb32-27" tabindex="-1"></a>       <span class="at">border=</span>T,</span>
-<span id="cb32-28"><a href="complexheatmap.html#cb32-28" tabindex="-1"></a>       <span class="at">show_row_names =</span> <span class="cn">FALSE</span>, </span>
-<span id="cb32-29"><a href="complexheatmap.html#cb32-29" tabindex="-1"></a>       <span class="at">show_column_names =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb32-30"><a href="complexheatmap.html#cb32-30" tabindex="-1"></a>       <span class="at">show_row_dend =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb32-31"><a href="complexheatmap.html#cb32-31" tabindex="-1"></a>       <span class="at">right_annotation =</span> row_annot,</span>
-<span id="cb32-32"><a href="complexheatmap.html#cb32-32" tabindex="-1"></a>       <span class="at">top_annotation =</span> top_anno,</span>
-<span id="cb32-33"><a href="complexheatmap.html#cb32-33" tabindex="-1"></a>       <span class="at">col =</span> col_scale,</span>
-<span id="cb32-34"><a href="complexheatmap.html#cb32-34" tabindex="-1"></a>       <span class="at">heatmap_legend_param =</span> <span class="fu">list</span>(<span class="at">direction =</span> <span class="st">&quot;horizontal&quot;</span>)),</span>
-<span id="cb32-35"><a href="complexheatmap.html#cb32-35" tabindex="-1"></a>     <span class="at">merge_legends =</span> T, <span class="at">heatmap_legend_side =</span> <span class="st">&quot;bottom&quot;</span>, <span class="at">annotation_legend_side=</span><span class="st">&quot;bottom&quot;</span>)</span>
-<span id="cb32-36"><a href="complexheatmap.html#cb32-36" tabindex="-1"></a></span>
-<span id="cb32-37"><a href="complexheatmap.html#cb32-37" tabindex="-1"></a><span class="fu">seekViewport</span>(<span class="st">&quot;annotation_Timepoint_1&quot;</span>)</span>
-<span id="cb32-38"><a href="complexheatmap.html#cb32-38" tabindex="-1"></a>loc1 <span class="ot">=</span> <span class="fu">deviceLoc</span>(<span class="at">x =</span> <span class="fu">unit</span>(<span class="fl">1.8</span>, <span class="st">&quot;npc&quot;</span>), <span class="at">y =</span> <span class="fu">unit</span>(<span class="dv">0</span>, <span class="st">&quot;npc&quot;</span>))</span>
-<span id="cb32-39"><a href="complexheatmap.html#cb32-39" tabindex="-1"></a>loc2 <span class="ot">=</span> <span class="fu">deviceLoc</span>(<span class="at">x =</span> <span class="fu">unit</span>(<span class="fl">1.8</span>, <span class="st">&quot;npc&quot;</span>), <span class="at">y =</span> <span class="fu">unit</span>(<span class="sc">-</span><span class="fl">14.7</span>, <span class="st">&quot;npc&quot;</span>))</span>
-<span id="cb32-40"><a href="complexheatmap.html#cb32-40" tabindex="-1"></a><span class="fu">seekViewport</span>(<span class="st">&quot;global&quot;</span>)</span>
-<span id="cb32-41"><a href="complexheatmap.html#cb32-41" tabindex="-1"></a><span class="fu">grid.text</span>(<span class="st">&quot;M1 ORA results&quot;</span>, <span class="at">x =</span> loc1<span class="sc">$</span>x ,<span class="at">y =</span> loc1<span class="sc">$</span>y)</span>
-<span id="cb32-42"><a href="complexheatmap.html#cb32-42" tabindex="-1"></a><span class="fu">grid.text</span>(<span class="st">&quot;M2 ORA results&quot;</span>, <span class="at">x =</span> loc2<span class="sc">$</span>x ,<span class="at">y =</span> loc2<span class="sc">$</span>y)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-269-1.png" width="768" /></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="complexheatmap.html#cb23-1" tabindex="-1"></a><span class="co"># interesting module indices</span></span>
+<span id="cb23-2"><a href="complexheatmap.html#cb23-2" tabindex="-1"></a>ind_list <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">&quot;M1&quot;</span>, <span class="st">&quot;M3&quot;</span>), <span class="cf">function</span>(x) {</span>
+<span id="cb23-3"><a href="complexheatmap.html#cb23-3" tabindex="-1"></a> <span class="co"># Get genes and positions</span></span>
+<span id="cb23-4"><a href="complexheatmap.html#cb23-4" tabindex="-1"></a> genes <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(module_genes, modules <span class="sc">%in%</span> x)<span class="sc">$</span>genes</span>
+<span id="cb23-5"><a href="complexheatmap.html#cb23-5" tabindex="-1"></a> <span class="fu">which</span>(<span class="fu">rownames</span>(exp_mat) <span class="sc">%in%</span> genes)</span>
+<span id="cb23-6"><a href="complexheatmap.html#cb23-6" tabindex="-1"></a>})</span>
+<span id="cb23-7"><a href="complexheatmap.html#cb23-7" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="complexheatmap.html#cb23-8" tabindex="-1"></a><span class="co"># Generate row annotation </span></span>
+<span id="cb23-9"><a href="complexheatmap.html#cb23-9" tabindex="-1"></a>row_annot <span class="ot">&lt;-</span> <span class="fu">rowAnnotation</span>(<span class="st">`</span><span class="at">GO ORA</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">anno_zoom</span>(<span class="at">align_to =</span> ind_list, </span>
+<span id="cb23-10"><a href="complexheatmap.html#cb23-10" tabindex="-1"></a>                                                <span class="at">which =</span> <span class="st">&quot;row&quot;</span>, </span>
+<span id="cb23-11"><a href="complexheatmap.html#cb23-11" tabindex="-1"></a>                                                <span class="at">panel_fun =</span> panel_fun_enr_results, </span>
+<span id="cb23-12"><a href="complexheatmap.html#cb23-12" tabindex="-1"></a>                                                <span class="co"># Set size for the annotation</span></span>
+<span id="cb23-13"><a href="complexheatmap.html#cb23-13" tabindex="-1"></a>                                                <span class="at">size =</span> <span class="fu">unit</span>(<span class="dv">5</span>, <span class="st">&quot;cm&quot;</span>), </span>
+<span id="cb23-14"><a href="complexheatmap.html#cb23-14" tabindex="-1"></a>                                                <span class="at">width =</span> <span class="fu">unit</span>(<span class="fl">10.5</span>, <span class="st">&quot;cm&quot;</span>)))</span>
+<span id="cb23-15"><a href="complexheatmap.html#cb23-15" tabindex="-1"></a></span>
+<span id="cb23-16"><a href="complexheatmap.html#cb23-16" tabindex="-1"></a><span class="co"># Generate top annotation</span></span>
+<span id="cb23-17"><a href="complexheatmap.html#cb23-17" tabindex="-1"></a>top_anno <span class="ot">=</span> <span class="fu">HeatmapAnnotation</span>(<span class="at">Timepoint=</span><span class="fu">gsub</span>(<span class="st">&quot;.*._d&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="fu">colnames</span>(exp_mat)),</span>
+<span id="cb23-18"><a href="complexheatmap.html#cb23-18" tabindex="-1"></a>                             <span class="at">annotation_name_side =</span> <span class="st">&quot;left&quot;</span>, </span>
+<span id="cb23-19"><a href="complexheatmap.html#cb23-19" tabindex="-1"></a>                             <span class="at">annotation_legend_param =</span> <span class="fu">list</span>(</span>
+<span id="cb23-20"><a href="complexheatmap.html#cb23-20" tabindex="-1"></a>                               <span class="at">Timepoint =</span> <span class="fu">list</span>(<span class="at">legend_direction =</span> <span class="st">&quot;horizontal&quot;</span>)),</span>
+<span id="cb23-21"><a href="complexheatmap.html#cb23-21" tabindex="-1"></a>                             <span class="at">col =</span> <span class="fu">list</span>(<span class="at">Timepoint=</span><span class="fu">c</span>(<span class="st">&quot;0&quot;</span><span class="ot">=</span><span class="st">&quot;lightblue&quot;</span>, </span>
+<span id="cb23-22"><a href="complexheatmap.html#cb23-22" tabindex="-1"></a>                                                    <span class="st">&quot;3&quot;</span><span class="ot">=</span><span class="st">&quot;dodgerblue&quot;</span>, </span>
+<span id="cb23-23"><a href="complexheatmap.html#cb23-23" tabindex="-1"></a>                                                    <span class="st">&quot;7&quot;</span><span class="ot">=</span><span class="st">&quot;dodgerblue4&quot;</span>)))</span>
+<span id="cb23-24"><a href="complexheatmap.html#cb23-24" tabindex="-1"></a></span>
+<span id="cb23-25"><a href="complexheatmap.html#cb23-25" tabindex="-1"></a><span class="fu">draw</span>(<span class="fu">Heatmap</span>(exp_mat, <span class="at">name=</span><span class="st">&quot;Z-score&quot;</span>,</span>
+<span id="cb23-26"><a href="complexheatmap.html#cb23-26" tabindex="-1"></a>       <span class="at">split =</span> module_genes<span class="sc">$</span>modules, </span>
+<span id="cb23-27"><a href="complexheatmap.html#cb23-27" tabindex="-1"></a>       <span class="at">border=</span>T,</span>
+<span id="cb23-28"><a href="complexheatmap.html#cb23-28" tabindex="-1"></a>       <span class="at">show_row_names =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb23-29"><a href="complexheatmap.html#cb23-29" tabindex="-1"></a>       <span class="at">show_column_names =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb23-30"><a href="complexheatmap.html#cb23-30" tabindex="-1"></a>       <span class="at">show_row_dend =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb23-31"><a href="complexheatmap.html#cb23-31" tabindex="-1"></a>       <span class="at">right_annotation =</span> row_annot,</span>
+<span id="cb23-32"><a href="complexheatmap.html#cb23-32" tabindex="-1"></a>       <span class="at">top_annotation =</span> top_anno,</span>
+<span id="cb23-33"><a href="complexheatmap.html#cb23-33" tabindex="-1"></a>       <span class="at">col =</span> col_scale,</span>
+<span id="cb23-34"><a href="complexheatmap.html#cb23-34" tabindex="-1"></a>       <span class="at">heatmap_legend_param =</span> <span class="fu">list</span>(<span class="at">direction =</span> <span class="st">&quot;horizontal&quot;</span>)),</span>
+<span id="cb23-35"><a href="complexheatmap.html#cb23-35" tabindex="-1"></a>     <span class="at">merge_legends =</span> T, <span class="at">heatmap_legend_side =</span> <span class="st">&quot;bottom&quot;</span>, <span class="at">annotation_legend_side=</span><span class="st">&quot;bottom&quot;</span>)</span>
+<span id="cb23-36"><a href="complexheatmap.html#cb23-36" tabindex="-1"></a></span>
+<span id="cb23-37"><a href="complexheatmap.html#cb23-37" tabindex="-1"></a><span class="co"># add titles to the plot</span></span>
+<span id="cb23-38"><a href="complexheatmap.html#cb23-38" tabindex="-1"></a><span class="fu">seekViewport</span>(<span class="st">&quot;annotation_Timepoint_1&quot;</span>)</span>
+<span id="cb23-39"><a href="complexheatmap.html#cb23-39" tabindex="-1"></a>loc1 <span class="ot">=</span> <span class="fu">deviceLoc</span>(<span class="at">x =</span> <span class="fu">unit</span>(<span class="fl">1.8</span>, <span class="st">&quot;npc&quot;</span>), <span class="at">y =</span> <span class="fu">unit</span>(<span class="dv">0</span>, <span class="st">&quot;npc&quot;</span>))</span>
+<span id="cb23-40"><a href="complexheatmap.html#cb23-40" tabindex="-1"></a>loc2 <span class="ot">=</span> <span class="fu">deviceLoc</span>(<span class="at">x =</span> <span class="fu">unit</span>(<span class="fl">1.8</span>, <span class="st">&quot;npc&quot;</span>), <span class="at">y =</span> <span class="fu">unit</span>(<span class="sc">-</span><span class="fl">14.7</span>, <span class="st">&quot;npc&quot;</span>))</span>
+<span id="cb23-41"><a href="complexheatmap.html#cb23-41" tabindex="-1"></a><span class="fu">seekViewport</span>(<span class="st">&quot;global&quot;</span>)</span>
+<span id="cb23-42"><a href="complexheatmap.html#cb23-42" tabindex="-1"></a><span class="fu">grid.text</span>(<span class="st">&quot;M1 ORA results&quot;</span>, <span class="at">x =</span> loc1<span class="sc">$</span>x ,<span class="at">y =</span> loc1<span class="sc">$</span>y)</span>
+<span id="cb23-43"><a href="complexheatmap.html#cb23-43" tabindex="-1"></a><span class="fu">grid.text</span>(<span class="st">&quot;M2 ORA results&quot;</span>, <span class="at">x =</span> loc2<span class="sc">$</span>x ,<span class="at">y =</span> loc2<span class="sc">$</span>y)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-24-1.png" width="768" /></p>
 
 </div>
 </div>

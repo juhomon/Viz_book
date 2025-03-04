@@ -23,7 +23,7 @@
 <meta name="author" content="Juho Mononen" />
 
 
-<meta name="date" content="2025-03-03" />
+<meta name="date" content="2025-03-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -235,7 +235,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-18"><a href="ggplot2.html#cb5-18" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;inside&quot;</span>, </span>
 <span id="cb5-19"><a href="ggplot2.html#cb5-19" tabindex="-1"></a>        <span class="at">legend.position.inside =</span> <span class="fu">c</span>(<span class="fl">0.12</span>, <span class="fl">0.85</span>),</span>
 <span id="cb5-20"><a href="ggplot2.html#cb5-20" tabindex="-1"></a>        )</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-252-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>Sometimes we want to facet which enables a bit nicer X-axis options e.g. separating axis for different species. This also enables possibility to use <code>ggpubr::stat_compare_means</code> for testing.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="ggplot2.html#cb6-1" tabindex="-1"></a><span class="co"># Comparisons to use for testing</span></span>
 <span id="cb6-2"><a href="ggplot2.html#cb6-2" tabindex="-1"></a>my_comparisons <span class="ot">&lt;-</span> <span class="fu">list</span>( <span class="fu">c</span>(<span class="st">&quot;Petal.Width&quot;</span>, <span class="st">&quot;Sepal.Width&quot;</span>), <span class="fu">c</span>(<span class="st">&quot;Petal.Length&quot;</span>, <span class="st">&quot;Sepal.Length&quot;</span>))</span>
@@ -263,7 +263,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb6-24"><a href="ggplot2.html#cb6-24" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(),</span>
 <span id="cb6-25"><a href="ggplot2.html#cb6-25" tabindex="-1"></a>        <span class="at">panel.grid.major.y =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> ggplot2<span class="sc">::</span><span class="fu">alpha</span>(<span class="st">&quot;black&quot;</span>, <span class="fl">0.4</span>), <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>)</span>
 <span id="cb6-26"><a href="ggplot2.html#cb6-26" tabindex="-1"></a>        )</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-253-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
 </div>
 <div id="volcano-plots" class="section level2 hasAnchor" number="2.3">
@@ -323,7 +323,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb8-32"><a href="ggplot2.html#cb8-32" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;inside&quot;</span>,</span>
 <span id="cb8-33"><a href="ggplot2.html#cb8-33" tabindex="-1"></a>        <span class="at">legend.position.inside =</span> <span class="fu">c</span>(<span class="fl">0.1</span>,<span class="fl">0.9</span>),</span>
 <span id="cb8-34"><a href="ggplot2.html#cb8-34" tabindex="-1"></a>        <span class="at">legend.background =</span> <span class="fu">element_blank</span>())</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-255-1.png" width="384" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-10-1.png" width="384" /></p>
 <p>For a bit more customizable plots we can separate significant and non-significant DEGs</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="ggplot2.html#cb9-1" tabindex="-1"></a><span class="co"># create dataframe for significant DEGs</span></span>
 <span id="cb9-2"><a href="ggplot2.html#cb9-2" tabindex="-1"></a>res_df_sig <span class="ot">&lt;-</span> res_df[res_df<span class="sc">$</span>padj<span class="sc">&lt;</span><span class="fl">0.01</span> <span class="sc">&amp;</span> <span class="fu">abs</span>(res_df<span class="sc">$</span>log2FoldChange)<span class="sc">&gt;</span><span class="dv">1</span>,]</span>
@@ -361,7 +361,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb10-28"><a href="ggplot2.html#cb10-28" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>(), </span>
 <span id="cb10-29"><a href="ggplot2.html#cb10-29" tabindex="-1"></a>        <span class="at">panel.grid =</span> <span class="fu">element_blank</span>(),</span>
 <span id="cb10-30"><a href="ggplot2.html#cb10-30" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-257-1.png" width="384" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-12-1.png" width="384" /></p>
 <p>Some times it can be interesting to see how the DEGs are separated into up- and down-regulated ones. We can calculate densities in 2d space using <code>MASS</code> and map the values to points in the graph.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="ggplot2.html#cb11-1" tabindex="-1"></a><span class="co">#For calculating density </span></span>
 <span id="cb11-2"><a href="ggplot2.html#cb11-2" tabindex="-1"></a>get_density <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, ...) {</span>
@@ -401,7 +401,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb11-36"><a href="ggplot2.html#cb11-36" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>(), </span>
 <span id="cb11-37"><a href="ggplot2.html#cb11-37" tabindex="-1"></a>        <span class="at">panel.grid =</span> <span class="fu">element_blank</span>(),</span>
 <span id="cb11-38"><a href="ggplot2.html#cb11-38" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-258-1.png" width="384" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-13-1.png" width="384" /></p>
 
 </div>
 </div>
